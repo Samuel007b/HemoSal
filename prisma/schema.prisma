@@ -1,0 +1,35 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Viagem {
+  id            Int        @id @default(autoincrement())   // PK, gerado automaticamente
+  dataSaida     DateTime                                   // obrigatório
+  numVagas      Int                                        // obrigatório
+  doadores  Doador[]                                       // relação N:N — uma viagem tem muitos doadores
+}
+
+model Doador {
+  id            Int        @id @default(autoincrement())   // PK, gerado automaticamente
+  cpf           String     @unique                         // obrigatório e único
+  rg            String     @unique                         // obrigatório e único
+  cartaoSus     String     @unique                         // obrigatório e único
+  nome          String                                     // obrigatório
+  dataNasc      DateTime                                   // obrigatório
+  sexo          String                                     // obrigatório
+  tipoSang      String                                     // obrigatório
+  endereco      String                                     // obrigatório
+  disponivel    Boolean                                    // obrigatório
+  viagens     Viagem[]                                     // relação N:N — um doador tem muitas viagens
+}
+
+model UserAdmin {
+  id           Int          @id @default(autoincrement())  // PK, gerado automaticamente
+  login        String       @unique                        // obrigatório e único
+  senhaHash    String                                      // obrigatório
+}
