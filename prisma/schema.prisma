@@ -10,26 +10,47 @@ generator client {
 model Viagem {
   id            Int        @id @default(autoincrement())   // PK, gerado automaticamente
   dataSaida     DateTime                                   // obrigatório
-  numVagas      Int                                        // obrigatório
-  doadores  Doador[]                                       // relação N:N — uma viagem tem muitos doadores
+  limiteVagas   Int                                        // obrigatório
+  doadores      Doador[]                                   // relação N:N — uma viagem tem muitos doadores
 }
 
 model Doador {
   id            Int        @id @default(autoincrement())   // PK, gerado automaticamente
-  cpf           String     @unique                         // obrigatório e único
-  rg            String     @unique                         // obrigatório e único
-  cartaoSus     String     @unique                         // obrigatório e único
+  cpf           String                                     // obrigatório
+  cpfHash       String     @unique                         // obrigatório e único
+  rg            String                                     // obrigatório
+  rgHash        String     @unique                         // obrigatório e único
+  cartaoSus     String                                     // obrigatório
+  cartaoSusHash String     @unique                         // obrigatório e único
   nome          String                                     // obrigatório
   dataNasc      DateTime                                   // obrigatório
-  sexo          String                                     // obrigatório
-  tipoSang      String                                     // obrigatório
+  sexo          Sexo                                       // obrigatório
+  tipoSang      TipoSanguineo                              // obrigatório
   endereco      String                                     // obrigatório
-  disponivel    Boolean                                    // obrigatório
-  viagens     Viagem[]                                     // relação N:N — um doador tem muitas viagens
+  viagens       Viagem[]                                   // relação N:N — um doador tem muitas viagens
+  criadoEm      DateTime   @default(now())                 // obrigatório
 }
 
 model UserAdmin {
-  id           Int          @id @default(autoincrement())  // PK, gerado automaticamente
-  login        String       @unique                        // obrigatório e único
-  senhaHash    String                                      // obrigatório
+  id            Int        @id @default(autoincrement())   // PK, gerado automaticamente
+  login         String     @unique                         // obrigatório e único
+  senhaHash     String                                     // obrigatório
+  criadoEm      DateTime   @default(now())                 // obrigatório
+}
+
+enum TipoSanguineo {
+  A_POSITIVO
+  A_NEGATIVO
+  B_POSITIVO
+  B_NEGATIVO
+  AB_POSITIVO
+  AB_NEGATIVO
+  O_POSITIVO
+  O_NEGATIVO
+}
+
+enum Sexo {
+  MASCULINO
+  FEMININO
+  OUTRO
 }

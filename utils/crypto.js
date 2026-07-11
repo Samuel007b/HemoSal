@@ -39,3 +39,10 @@ export function decrypt(payload){
   ]);
   return decrypted.toString("utf8");
 }
+
+export function hash(value) {
+    return crypto
+        .createHmac("sha256", process.env.HASH_SECRET)
+        .update(value.replace(/\D/g, ""))
+        .digest("hex");
+}

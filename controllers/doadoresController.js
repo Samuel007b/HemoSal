@@ -1,10 +1,36 @@
 import prisma from '../prisma/client.js';
-import { encrypt, decrypt } from "../utils/crypto.js";
+import { encrypt, decrypt, hash } from "../utils/crypto.js";
+import { calculaDisponibilidade } from '../utils/disponibilidade.js';
+import { formataTipo, transformaTipo } from '../utils/tipoSang.js';
+import { formataSexo, transformaSexo } from '../utils/genero.js';
+
+const doadorSelect = {
+    id: true,
+    nome: true,
+    cpf: true,
+    rg: true,
+    cartaoSus: true,
+    dataNasc: true,
+    sexo: true,
+    tipoSang: true,
+    endereco: true,
+    viagens: {
+        orderBy: { dataSaida: 'desc' },
+        select: {
+            id: true,
+            dataSaida: true,
+            limiteVagas: true
+        }
+    },
+    criadoEm: true
+};
 
 // GET /doadores - lista todos os doadores
 export async function listarDoadores(req, res, next){
     try{
-        const doadores = await prisma.doador.findMany();
+        const doadores = await prisma.doador.findMany({
+            select: doadorSelect
+        });
         res.json(doadores.map(descriptografarDoador));
     }
     catch(erro){
@@ -20,7 +46,8 @@ export async function listarDoadoresNome(req, res, next){
             return res.status(400).json({ erro: 'O campo nome é obrigatório' });
         }
         const doadores = await prisma.doador.findMany({
-            where: { nome: { contains: nome, mode: "insensitive" } }
+            where: { nome: { contains: nome, mode: "insensitive" } },
+            select: doadorSelect
         });
         res.json(doadores.map(descriptografarDoador));
     }
@@ -36,8 +63,10 @@ export async function buscarDoadorCpf(req, res, next){
         if (!cpf) {
             return res.status(400).json({ erro: 'O campo CPF é obrigatório' });
         }
-        const doadores = await prisma.doador.findMany();
-        const doador = doadores.find(d => decrypt(d.cpf) === cpf);
+        const doador = await prisma.doador.findUnique({
+            where: { cpfHash: hash(cpf.replace(/\D/g, "")) },
+            select: doadorSelect
+        });
         if (!doador) {
             return res.status(404).json({ erro: 'Doador não encontrado' });
         }
@@ -55,8 +84,10 @@ export async function buscarDoadorRg(req, res, next){
         if (!rg) {
             return res.status(400).json({ erro: 'O campo RG é obrigatório' });
         }
-        const doadores = await prisma.doador.findMany();
-        const doador = doadores.find(d => decrypt(d.rg) === rg);
+        const doador = await prisma.doador.findUnique({
+            where: { rgHash: hash(rg.replace(/\D/g, "")) },
+            select: doadorSelect
+        });
         if (!doador) {
             return res.status(404).json({ erro: 'Doador não encontrado' });
         }
@@ -74,8 +105,10 @@ export async function buscarDoadorSus(req, res, next){
         if (!cartaoSus) {
             return res.status(400).json({ erro: 'O campo Cartão SUS é obrigatório' });
         }
-        const doadores = await prisma.doador.findMany();
-        const doador = doadores.find(d => decrypt(d.cartaoSus) === cartaoSus);
+        const doador = await prisma.doador.findUnique({
+            where: { cartaoSusHash: hash(cartaoSus.replace(/\D/g, "")) },
+            select: doadorSelect
+        });
         if (!doador) {
             return res.status(404).json({ erro: 'Doador não encontrado' });
         }
@@ -93,8 +126,16 @@ export async function listarDoadoresTipo(req, res, next){
         if (!tipoSang) {
             return res.status(400).json({ erro: 'O campo tipo sanguíneo é obrigatório' });
         }
+        let sangue
+        try{
+            sangue = transformaTipo(tipoSang)
+        }
+        catch(error){
+            return res.status(400).json({ erro: error.message });
+        }
         const doadores = await prisma.doador.findMany({
-            where: { tipoSang: tipoSang }
+            where: { tipoSang: sangue },
+            select: doadorSelect
         });
         res.json(doadores.map(descriptografarDoador));
     }
@@ -107,11 +148,12 @@ export async function listarDoadoresTipo(req, res, next){
 export async function buscarDoador(req, res, next){
     try{
         const { id } = req.params;
-        if (isNaN(Number(id))) {
+        if (isNaN(Number(id)) || !Number.isInteger(Number(id))) {
             return res.status(400).json({ erro: 'ID inválido' });
         }
         const doador = await prisma.doador.findUnique({
-            where: { id: Number(id) }
+            where: { id: Number(id) },
+            select: doadorSelect
         });
         if (!doador) {
             return res.status(404).json({ erro: 'Doador não encontrado' });
@@ -130,18 +172,33 @@ export async function criarDoador(req, res, next){
         if (!cpf || !rg || !cartaoSus || !nome || !dataNasc || !sexo || !tipoSang || !endereco) {
             return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
         }
+        const dataNascimento = new Date(dataNasc);
+        if (isNaN(dataNascimento.getTime())) {
+            return res.status(400).json({ erro: 'Data de nascimento inválida' });
+        }
+        let sangue, genero
+        try{
+            sangue = transformaTipo(tipoSang)
+            genero = transformaSexo(sexo)
+        }
+        catch(error){
+            return res.status(400).json({ erro: error.message });
+        }
         const novoDoador = await prisma.doador.create({
             data: {
-                cpf: encrypt(cpf),
-                rg: encrypt(rg),
-                cartaoSus: encrypt(cartaoSus),
+                cpf: encrypt(cpf.replace(/\D/g, "")),
+                cpfHash: hash(cpf.replace(/\D/g, "")),
+                rg: encrypt(rg.replace(/\D/g, "")),
+                rgHash: hash(rg.replace(/\D/g, "")),
+                cartaoSus: encrypt(cartaoSus.replace(/\D/g, "")),
+                cartaoSusHash: hash(cartaoSus.replace(/\D/g, "")),
                 nome: nome,
-                dataNasc: dataNasc,
-                sexo: sexo,
-                tipoSang: tipoSang,
-                endereco: endereco,
-                disponivel: false
-            }
+                dataNasc: dataNascimento,
+                sexo: genero,
+                tipoSang: sangue,
+                endereco: endereco
+            },
+            select: doadorSelect
         });
         res.status(201).json(descriptografarDoador(novoDoador));
     }
@@ -161,21 +218,37 @@ export async function atualizarDoador(req, res, next){
         if (!cpf || !rg || !cartaoSus || !nome || !dataNasc || !sexo || !tipoSang || !endereco) {
             return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
         }
-        if (isNaN(Number(id))) {
+        if (isNaN(Number(id)) || !Number.isInteger(Number(id))) {
             return res.status(400).json({ erro: 'ID inválido' });
+        }
+        const dataNascimento = new Date(dataNasc);
+        if (isNaN(dataNascimento.getTime())) {
+            return res.status(400).json({ erro: 'Data de nascimento inválida' });
+        }
+        let sangue, genero
+        try{
+            sangue = transformaTipo(tipoSang)
+            genero = transformaSexo(sexo)
+        }
+        catch(error){
+            return res.status(400).json({ erro: error.message });
         }
         const doador = await prisma.doador.update({
             where: { id: Number(id) },
             data: {
-                cpf: encrypt(cpf),
-                rg: encrypt(rg),
-                cartaoSus: encrypt(cartaoSus),
+                cpf: encrypt(cpf.replace(/\D/g, "")),
+                cpfHash: hash(cpf.replace(/\D/g, "")),
+                rg: encrypt(rg.replace(/\D/g, "")),
+                rgHash: hash(rg.replace(/\D/g, "")),
+                cartaoSus: encrypt(cartaoSus.replace(/\D/g, "")),
+                cartaoSusHash: hash(cartaoSus.replace(/\D/g, "")),
                 nome: nome,
-                dataNasc: dataNasc,
-                sexo: sexo,
-                tipoSang: tipoSang,
+                dataNasc: dataNascimento,
+                sexo: genero,
+                tipoSang: sangue,
                 endereco: endereco
-            }
+            },
+            select: doadorSelect
         });
         res.json(descriptografarDoador(doador));
     }
@@ -184,7 +257,7 @@ export async function atualizarDoador(req, res, next){
             return res.status(404).json({ erro: 'Doador não encontrado' });
         }
         if (erro.code === "P2002") {
-            return res.status(409).json({ erro: "CPF, RG ou Cartão SUS já cadastrado" });
+            return res.status(409).json({ erro: "CPF, RG e/ou Cartão SUS já cadastrado(s)" });
         }
         next(erro);
     }
@@ -194,7 +267,7 @@ export async function atualizarDoador(req, res, next){
 export async function deletarDoador(req, res, next){
     try{
         const { id } = req.params;
-        if (isNaN(Number(id))) {
+        if (isNaN(Number(id)) || !Number.isInteger(Number(id))) {
             return res.status(400).json({ erro: 'ID inválido' });
         }
         await prisma.doador.delete({
@@ -215,10 +288,14 @@ export async function deletarDoador(req, res, next){
 
 function descriptografarDoador(doador) {
     if (!doador) return null;
+    const { viagens, ...dadosDoador } = doador;
     return {
-        ...doador,
+        ...dadosDoador,
         cpf: decrypt(doador.cpf),
         rg: decrypt(doador.rg),
-        cartaoSus: decrypt(doador.cartaoSus)
+        sexo: formataSexo(doador.sexo),
+        tipoSang: formataTipo(doador.tipoSang),
+        cartaoSus: decrypt(doador.cartaoSus),
+        disponivel: calculaDisponibilidade(doador)
     };
 }
