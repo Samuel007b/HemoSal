@@ -5,6 +5,7 @@ import logger from './middlewares/logger.js';
 import tratarErro from './middlewares/erro.js';
 import doadoresRouter from './routes/doadores.js';
 import viagensRouter from './routes/viagens.js';
+import jwt from "jsonwebtoken";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +25,15 @@ app.get('/status', (req, res) => {
 app.use('/doadores', doadoresRouter);
 
 app.use('/viagens', viagensRouter);
+
+app.use("/generateToken", (req, res) => {
+  const token = jwt.sign(
+    { id: 1 },
+    process.env.SECRET_TOKEN,
+    { expiresIn: '1h' }
+  );
+  res.send({ token: token });
+});
 
 app.use(tratarErro);
 
