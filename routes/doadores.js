@@ -2,9 +2,9 @@ import { Router } from 'express';
 import {
   listarDoadores,
   listarDoadoresNome,
-  listarDoadoresCpf,
-  listarDoadoresRg,
-  listarDoadoresSus,
+  buscarDoadorCpf,
+  buscarDoadorRg,
+  buscarDoadorSus,
   listarDoadoresTipo,
   buscarDoador,
   criarDoador,
@@ -16,9 +16,9 @@ const router = Router();
 
 router.get('/', listarDoadores);        // GET /doadores
 router.get('/nome', listarDoadoresNome);    // GET /doadores/nome
-router.get('/cpf', listarDoadoresCpf);     // GET /doadores/cpf
-router.get('/rg', listarDoadoresRg);      // GET /doadores/rg
-router.get('/sus', listarDoadoresSus);     // GET /doadores/sus
+router.get('/cpf', buscarDoadorCpf);     // GET /doadores/cpf
+router.get('/rg', buscarDoadorRg);      // GET /doadores/rg
+router.get('/sus', buscarDoadorSus);     // GET /doadores/sus
 router.get('/tipo', listarDoadoresTipo);    // GET /doadores/tipo
 router.get('/:id', buscarDoador);       // GET /doadores/:id
 router.post('/', criarDoador);          // POST /doadores
