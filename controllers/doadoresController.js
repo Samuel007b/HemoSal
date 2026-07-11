@@ -18,8 +18,7 @@ const doadorSelect = {
         orderBy: { dataSaida: 'desc' },
         select: {
             id: true,
-            dataSaida: true,
-            limiteVagas: true
+            dataSaida: true
         }
     },
     criadoEm: true
@@ -204,7 +203,7 @@ export async function criarDoador(req, res, next){
     }
     catch(erro){
         if (erro.code === "P2002") {
-            return res.status(409).json({ erro: "CPF, RG ou Cartão SUS já cadastrado" });
+            return res.status(409).json({ erro: "CPF, RG e/ou Cartão SUS já cadastrado(s)" });
         }
         next(erro);
     }
@@ -288,9 +287,8 @@ export async function deletarDoador(req, res, next){
 
 function descriptografarDoador(doador) {
     if (!doador) return null;
-    const { viagens, ...dadosDoador } = doador;
     return {
-        ...dadosDoador,
+        ...doador,
         cpf: decrypt(doador.cpf),
         rg: decrypt(doador.rg),
         sexo: formataSexo(doador.sexo),

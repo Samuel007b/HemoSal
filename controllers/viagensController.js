@@ -63,6 +63,9 @@ export async function buscarViagem(req, res, next){
 export async function criarViagem(req, res, next){
     try {
         const { dataSaida, limiteVagas, doadores } = req.body;
+        if (!dataSaida || !limiteVagas || !doadores) {
+            return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
+        }
         try{
             await validarViagem(dataSaida, limiteVagas, doadores)
         }
@@ -100,6 +103,9 @@ export async function atualizarViagem(req, res, next){
     try {
         const { id } = req.params;
         const { dataSaida, limiteVagas, doadores } = req.body;
+        if (!dataSaida || !limiteVagas || !doadores) {
+            return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
+        }
         if (!Number.isInteger(Number(id)) || Number(id)<=0) {
             return res.status(400).json({ erro: 'ID inválido' });
         }
