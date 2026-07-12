@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { viagensService } from '../services/api'
 import { formatDate, maskCpf } from '../utils/format'
 import { formatDateTime } from '../utils/viagem'
+import { ordenarPorNome } from '../utils/buscaDoadores'
 import Spinner from './Spinner'
 import './ViagemDetalhesModal.css'
 
@@ -68,7 +69,7 @@ function ViagemDetalhesModal({ viagemId, onClose, onEditar, onExcluido }) {
 
             <span className="detalhes-label">Doadores nessa viagem</span>
             <ul className="viagem-detalhes-lista">
-              {viagem.doadores.map((doador) => (
+              {ordenarPorNome(viagem.doadores).map((doador) => (
                 <li key={doador.id}>
                   <span className="viagem-doador-nome">{doador.nome}</span>
                   <span>{maskCpf(doador.cpf)}</span>

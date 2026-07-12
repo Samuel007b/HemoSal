@@ -10,6 +10,11 @@ export function formatCpf(cpf) {
   return `${digitos.slice(0, 3)}.${digitos.slice(3, 6)}.${digitos.slice(6, 9)}-${digitos.slice(9)}`
 }
 
+export function cpfValido(cpf) {
+  const digitos = (cpf || '').replace(/\D/g, '')
+  return digitos.length === 11
+}
+
 export function formatDate(isoString) {
   if (!isoString) return '-'
   const data = new Date(isoString)

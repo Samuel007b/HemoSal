@@ -18,9 +18,13 @@
 .campo-sigiloso { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .campo-sigiloso-label { font-size: 0.85rem; font-weight: 600; min-width: 90px; }
 .campo-sigiloso-valor { display: flex; align-items: center; gap: 0.6rem; font-family: monospace; }
-.campo-sigiloso-valor button {
-  background: none; border: none; color: #b91c1c;
-  font-size: 0.78rem; cursor: pointer; font-family: inherit;
+.campo-sigiloso-olho {
+  background: none;
+  border: none;
+  color: #b91c1c;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
 }
 .detalhes-viagens ul { margin: 0.3rem 0 0; padding-left: 1.1rem; }
 @media (max-width: 480px) {

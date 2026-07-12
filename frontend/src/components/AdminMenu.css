@@ -53,3 +53,31 @@
   color: #15803d;
   font-weight: 600;
 }
+
+.admin-menu-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.admin-menu-form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 0.6rem;
+}
+
+.admin-menu-form input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.admin-menu-form .btn-primario {
+  margin-top: 1.2rem;
+  width: 100%;
+  justify-content: center;
+}

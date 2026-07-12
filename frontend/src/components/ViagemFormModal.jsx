@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { doadoresService, viagensService } from '../services/api'
 import { combinarDataHora, separarDataHora, formatDateTime } from '../utils/viagem'
 import { doadorDisponivel } from '../utils/disponibilidade'
+import { filtrarDoadores, ordenarPorNome, TIPOS_BUSCA_DOADOR } from '../utils/buscaDoadores'
 import Spinner from './Spinner'
 import './ViagemFormModal.css'
 
@@ -20,7 +21,8 @@ function ViagemFormModal({ modo, viagem, onClose, onSuccess }) {
   const [doadores, setDoadores] = useState([])
   const [carregandoDoadores, setCarregandoDoadores] = useState(false)
   const [erroDoadores, setErroDoadores] = useState('')
-  const [filtro, setFiltro] = useState('')
+  const [tipoBuscaDoador, setTipoBuscaDoador] = useState('nome')
+  const [termoBuscaDoador, setTermoBuscaDoador] = useState('')
 
   const [salvando, setSalvando] = useState(false)
   const [erroSalvar, setErroSalvar] = useState('')
@@ -63,9 +65,7 @@ function ViagemFormModal({ modo, viagem, onClose, onSuccess }) {
     })
   }
 
-  const doadoresFiltrados = doadores
-    .filter((d) => d.nome.toLowerCase().includes(filtro.toLowerCase()))
-    .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+  const doadoresFiltrados = ordenarPorNome(filtrarDoadores(doadores, tipoBuscaDoador, termoBuscaDoador))
 
   async function handleSalvar() {
     setErroSalvar('')
@@ -139,13 +139,19 @@ function ViagemFormModal({ modo, viagem, onClose, onSuccess }) {
               </button>
             </div>
 
-            <input
-              type="text"
-              className="viagem-form-busca"
-              placeholder="Buscar doador pelo nome..."
-              value={filtro}
-              onChange={(e) => setFiltro(e.target.value)}
-            />
+            <div className="viagem-form-busca">
+              <select value={tipoBuscaDoador} onChange={(e) => setTipoBuscaDoador(e.target.value)}>
+                {TIPOS_BUSCA_DOADOR.map((op) => (
+                  <option key={op.value} value={op.value}>{op.label}</option>
+                ))}
+              </select>
+              <input
+                type="text"
+                placeholder={`Buscar por ${TIPOS_BUSCA_DOADOR.find((o) => o.value === tipoBuscaDoador)?.label.toLowerCase()}...`}
+                value={termoBuscaDoador}
+                onChange={(e) => setTermoBuscaDoador(e.target.value)}
+              />
+            </div>
 
             <div className="viagem-form-contador">
               Selecionados: {selecionados.size} / {limiteNum}

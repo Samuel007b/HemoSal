@@ -1,0 +1,28 @@
+.campo-senha {
+  position: relative;
+  width: 100%;
+}
+
+.campo-senha input.campo-senha-input {
+  width: 100%;
+  padding: 0.6rem 2.4rem 0.6rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.campo-senha-olho {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  display: flex;
+  align-items: center;
+  padding: 0.2rem;
+}
+.campo-senha-olho:hover { color: #b91c1c; }

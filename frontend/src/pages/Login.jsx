@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { authService } from '../services/api'
+import CampoSenha from '../components/CampoSenha'
 import './Login.css'
 
 function Login() {
@@ -52,9 +53,8 @@ function Login() {
         />
 
         <label htmlFor="senha">Senha</label>
-        <input
+        <CampoSenha
           id="senha"
-          type="password"
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
           autoComplete="current-password"
@@ -62,7 +62,7 @@ function Login() {
 
         {erro && <p className="login-erro">{erro}</p>}
 
-        <button type="submit" disabled={carregando}>
+        <button type="submit" className="btn-primario" disabled={carregando}>
           {carregando ? 'Entrando...' : 'Entrar'}
         </button>
       </form>

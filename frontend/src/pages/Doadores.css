@@ -25,3 +25,24 @@
   padding: 0.45rem 0.9rem; border: 1px solid #ccc; border-radius: 6px; background: #fff; cursor: pointer;
 }
 .doadores-paginacao button:disabled { opacity: 0.5; cursor: not-allowed; }
+.doadores-busca {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+.doadores-busca select {
+  padding: 0.55rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+}
+.doadores-busca input {
+  flex: 1;
+  padding: 0.55rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+@media (max-width: 480px) {
+  .doadores-busca { flex-wrap: wrap; }
+}

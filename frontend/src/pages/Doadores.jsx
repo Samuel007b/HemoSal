@@ -2,9 +2,11 @@ import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { doadoresService } from '../services/api'
 import { maskCpf, formatDate } from '../utils/format'
+import { filtrarDoadores, ordenarPorNome, TIPOS_BUSCA_DOADOR } from '../utils/buscaDoadores'
 import DoadorFormModal from '../components/DoadorFormModal'
 import DoadorDetalhesModal from '../components/DoadorDetalhesModal'
 import Spinner from '../components/Spinner'
+import IconeOlho from '../components/IconeOlho'
 import './Doadores.css'
 
 const POR_PAGINA = 20
@@ -15,6 +17,9 @@ function Doadores() {
   const [carregando, setCarregando] = useState(true)
   const [erro, setErro] = useState('')
   const [pagina, setPagina] = useState(1)
+
+  const [tipoBusca, setTipoBusca] = useState('nome')
+  const [termoBusca, setTermoBusca] = useState('')
 
   const [detalheId, setDetalheId] = useState(null)
   const [formModal, setFormModal] = useState(null) // { modo: 'criar' } | { modo: 'editar', doador }
@@ -33,7 +38,12 @@ function Doadores() {
     carregarDoadores()
   }, [carregarDoadores])
 
-  const doadoresOrdenados = [...doadores].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+  // volta pra primeira página sempre que o tipo ou o termo de busca mudam
+  useEffect(() => {
+    setPagina(1)
+  }, [tipoBusca, termoBusca])
+
+  const doadoresOrdenados = ordenarPorNome(filtrarDoadores(doadores, tipoBusca, termoBusca))
   const totalPaginas = Math.max(1, Math.ceil(doadoresOrdenados.length / POR_PAGINA))
   const paginaAtual = Math.min(pagina, totalPaginas)
   const doadoresPagina = doadoresOrdenados.slice(
@@ -47,6 +57,8 @@ function Doadores() {
     carregarDoadores()
   }
 
+  const labelBuscaAtual = TIPOS_BUSCA_DOADOR.find((op) => op.value === tipoBusca)?.label ?? ''
+
   return (
     <div className="doadores-page">
       <header className="doadores-header">
@@ -58,6 +70,27 @@ function Doadores() {
       </header>
 
       <main className="doadores-main">
+        {!carregando && !erro && (
+          <div className="doadores-busca">
+            <select value={tipoBusca} onChange={(e) => setTipoBusca(e.target.value)}>
+              {TIPOS_BUSCA_DOADOR.map((op) => (
+                <option key={op.value} value={op.value}>{op.label}</option>
+              ))}
+            </select>
+            <input
+              type="text"
+              placeholder={`Buscar por ${labelBuscaAtual.toLowerCase()}...`}
+              value={termoBusca}
+              onChange={(e) => setTermoBusca(e.target.value)}
+            />
+            {termoBusca && (
+              <button type="button" className="btn-secundario" onClick={() => setTermoBusca('')}>
+                Limpar
+              </button>
+            )}
+          </div>
+        )}
+
         {carregando && (
           <div className="doadores-loading">
             <Spinner escuro />
@@ -68,7 +101,9 @@ function Doadores() {
         {erro && <p className="modal-erro">{erro}</p>}
 
         {!carregando && !erro && doadoresOrdenados.length === 0 && (
-          <p className="doadores-vazio">Nenhum doador cadastrado ainda.</p>
+          <p className="doadores-vazio">
+            {termoBusca ? 'Nenhum doador encontrado para essa busca.' : 'Nenhum doador cadastrado ainda.'}
+          </p>
         )}
 
         {!carregando && doadoresPagina.length > 0 && (
@@ -93,8 +128,8 @@ function Doadores() {
                     <td>{doador.sexo}</td>
                     <td>{formatDate(doador.dataNasc)}</td>
                     <td>
-                      <button className="btn-link" onClick={() => setDetalheId(doador.id)}>
-                        Ver detalhes
+                      <button className="btn-icone" onClick={() => setDetalheId(doador.id)} aria-label="Ver detalhes do doador">
+                        <IconeOlho aberto />
                       </button>
                     </td>
                   </tr>

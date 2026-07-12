@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { doadoresService } from '../services/api'
 import { SEXO_OPCOES, TIPO_SANG_OPCOES } from '../utils/enums'
-import { dateToInputValue } from '../utils/format'
+import { dateToInputValue, cpfValido } from '../utils/format'
 import Spinner from './Spinner'
 import './DoadorFormModal.css'
 
@@ -34,6 +34,11 @@ function DoadorFormModal({ modo, doador, onClose, onSuccess }) {
     const algumCampoVazio = Object.values(form).some((v) => !v)
     if (algumCampoVazio) {
       setErro('Preencha todos os campos.')
+      return
+    }
+
+    if (!cpfValido(form.cpf)) {
+    setErro('O CPF deve conter 11 dígitos.')
       return
     }
 

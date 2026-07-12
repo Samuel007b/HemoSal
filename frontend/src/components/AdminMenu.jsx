@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { authService, userAdminService } from '../services/api'
 import { logout } from '../utils/auth'
+import CampoSenha from './CampoSenha'
 import './AdminMenu.css'
 
 function AdminMenu({ admin }) {
@@ -118,15 +119,14 @@ function EditarAdminModal({ admin, onClose }) {
         <button className="modal-fechar" onClick={onClose}>×</button>
 
         {etapa === 'confirmar' && (
-          <form onSubmit={handleConfirmarSenha}>
+          <form onSubmit={handleConfirmarSenha} className="admin-menu-form">
             <h2>Confirme sua senha</h2>
             <p className="modal-subtitulo">
               Por segurança, digite sua senha atual para continuar.
             </p>
             <label htmlFor="senhaAtual">Senha atual</label>
-            <input
+            <CampoSenha
               id="senhaAtual"
-              type="password"
               value={senhaAtual}
               onChange={(e) => setSenhaAtual(e.target.value)}
               autoFocus
@@ -139,7 +139,7 @@ function EditarAdminModal({ admin, onClose }) {
         )}
 
         {etapa === 'editar' && !sucesso && (
-          <form onSubmit={handleSalvar}>
+          <form onSubmit={handleSalvar} className="admin-menu-form">
             <h2>Editar meus dados</h2>
             <label htmlFor="novoLogin">Login</label>
             <input
@@ -149,16 +149,14 @@ function EditarAdminModal({ admin, onClose }) {
               onChange={(e) => setNovoLogin(e.target.value)}
             />
             <label htmlFor="novaSenha">Nova senha</label>
-            <input
+            <CampoSenha
               id="novaSenha"
-              type="password"
               value={novaSenha}
               onChange={(e) => setNovaSenha(e.target.value)}
             />
             <label htmlFor="confirmaSenha">Confirmar nova senha</label>
-            <input
+            <CampoSenha
               id="confirmaSenha"
-              type="password"
               value={confirmaSenha}
               onChange={(e) => setConfirmaSenha(e.target.value)}
             />

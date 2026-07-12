@@ -5,6 +5,7 @@ import { formatDateTime } from '../utils/viagem'
 import ViagemFormModal from '../components/ViagemFormModal'
 import ViagemDetalhesModal from '../components/ViagemDetalhesModal'
 import Spinner from '../components/Spinner'
+import IconeOlho from '../components/IconeOlho'
 import './Viagens.css'
 
 const POR_PAGINA = 20
@@ -86,8 +87,8 @@ function Viagens() {
                     <td>{viagem.doadores.length}</td>
                     <td>{viagem.limiteVagas}</td>
                     <td>
-                      <button className="btn-link" onClick={() => setDetalheId(viagem.id)}>
-                        Ver detalhes
+                      <button className="btn-icone" onClick={() => setDetalheId(viagem.id)} aria-label="Ver detalhes da viagem">
+                        <IconeOlho aberto />
                       </button>
                     </td>
                   </tr>

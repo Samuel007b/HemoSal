@@ -19,12 +19,22 @@
 }
 
 .viagem-form-busca {
-  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.viagem-form-busca select {
+  padding: 0.55rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+}
+.viagem-form-busca input {
+  flex: 1;
   padding: 0.55rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   box-sizing: border-box;
-  margin-bottom: 0.6rem;
 }
 
 .viagem-form-contador {
