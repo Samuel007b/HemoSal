@@ -1,13 +1,19 @@
 import prisma from '../prisma/client.js';
 import { decrypt } from "../utils/crypto.js";
 import { formataTipo } from '../utils/tipoSang.js';
+import { formataSexo } from '../utils/genero.js';
 import { calculaDisponibilidade } from "../utils/disponibilidade.js";
 
 const doadorSelect = {
     id: true,
     nome: true,
     cpf: true,
-    tipoSang: true
+    rg: true,
+    cartaoSus: true,
+    dataNasc: true,
+    sexo: true,
+    tipoSang: true,
+    endereco: true
 };
 
 // GET /viagens - lista todas as viagens
@@ -21,6 +27,9 @@ export async function listarViagens(req, res, next){
                 },
             },
         });
+        if (viagens.length === 0) {
+            res.status(204).end()
+        }
         res.json(viagens.map(viagem => ({
             ...viagem,
             doadores: viagem.doadores.map(descriptografarDoador)
@@ -169,7 +178,10 @@ function descriptografarDoador(doador) {
     return {
         ...doador,
         cpf: decrypt(doador.cpf),
+        rg: decrypt(doador.rg),
+        sexo: formataSexo(doador.sexo),
         tipoSang: formataTipo(doador.tipoSang),
+        cartaoSus: decrypt(doador.cartaoSus)
     };
 }
 

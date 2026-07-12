@@ -14,6 +14,9 @@ export async function listarUsuarios(req, res, next){
         const usuarios = await prisma.userAdmin.findMany({
             select: userAdminSelect
         });
+        if (usuarios.length === 0) {
+            res.status(204).end()
+        }
         res.json(usuarios);
     }
     catch(erro){

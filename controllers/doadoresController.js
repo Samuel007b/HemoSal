@@ -30,6 +30,9 @@ export async function listarDoadores(req, res, next){
         const doadores = await prisma.doador.findMany({
             select: doadorSelect
         });
+        if (doadores.length === 0) {
+            res.status(204).end()
+        }
         res.json(doadores.map(descriptografarDoador));
     }
     catch(erro){
@@ -48,6 +51,9 @@ export async function listarDoadoresNome(req, res, next){
             where: { nome: { contains: nome, mode: "insensitive" } },
             select: doadorSelect
         });
+        if (doadores.length === 0) {
+            res.status(204).end()
+        }
         res.json(doadores.map(descriptografarDoador));
     }
     catch(erro){
@@ -136,6 +142,9 @@ export async function listarDoadoresTipo(req, res, next){
             where: { tipoSang: sangue },
             select: doadorSelect
         });
+        if (doadores.length === 0) {
+            res.status(204).end()
+        }
         res.json(doadores.map(descriptografarDoador));
     }
     catch(erro){
