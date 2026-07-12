@@ -1,0 +1,30 @@
+.doador-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+.doador-form-grid label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.doador-form-grid input,
+.doador-form-grid select {
+  width: 100%;
+  padding: 0.55rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+.doador-form-full { grid-column: 1 / -1; }
+.doador-form-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  margin-top: 1.4rem;
+}
+@media (max-width: 480px) {
+  .doador-form-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,118 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  padding: 1rem;
+}
+
+.modal-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.8rem;
+  width: 100%;
+  max-width: 360px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-card-lg { max-width: 560px; }
+
+.modal-fechar {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.8rem;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #888;
+}
+
+.modal-erro {
+  color: #b91c1c;
+  font-size: 0.85rem;
+  margin: 0.6rem 0 0;
+}
+
+.modal-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #666;
+  padding: 1rem 0;
+}
+
+.btn-primario {
+  padding: 0.6rem 1.1rem;
+  border: none;
+  border-radius: 6px;
+  background: #b91c1c;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.btn-primario:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-secundario {
+  padding: 0.6rem 1.1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.btn-perigo {
+  padding: 0.6rem 1.1rem;
+  border: 1px solid #b91c1c;
+  border-radius: 6px;
+  background: #fff;
+  color: #b91c1c;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-perigo:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #b91c1c;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0;
+}
+
+.btn-voltar {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+}
+
+.detalhes-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.detalhes-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  margin-top: 1.2rem;
+}
+
+.detalhes-confirmacao p {
+  font-size: 0.9rem;
+  color: #444;
+}

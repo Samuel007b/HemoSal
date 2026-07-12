@@ -1,0 +1,80 @@
+.viagem-form-dados {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 1rem;
+}
+.viagem-form-dados label { font-size: 0.85rem; font-weight: 600; margin-top: 0.6rem; }
+.viagem-form-dados input { padding: 0.55rem; border: 1px solid #ccc; border-radius: 6px; }
+
+.viagem-form-resumo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fafafa;
+  padding: 0.6rem 0.9rem;
+  border-radius: 6px;
+  margin: 1rem 0 0.8rem;
+  font-size: 0.9rem;
+}
+
+.viagem-form-busca {
+  width: 100%;
+  padding: 0.55rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  margin-bottom: 0.6rem;
+}
+
+.viagem-form-contador {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 0.5rem;
+}
+
+.viagem-form-lista-doadores {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.viagem-doador-item { border-bottom: 1px solid #f0f0f0; }
+.viagem-doador-item:last-child { border-bottom: none; }
+
+.viagem-doador-item label {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+}
+
+.viagem-doador-item.indisponivel label { cursor: not-allowed; color: #aaa; }
+
+.viagem-doador-nome { flex: 1; }
+.viagem-doador-tipo { color: #888; font-size: 0.8rem; }
+
+.viagem-doador-badge {
+  font-size: 0.72rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: #fdecea;
+  color: #b91c1c;
+}
+.viagem-doador-badge-limite { background: #fff4e5; color: #b45309; }
+
+.viagem-doador-vazio { padding: 1rem; text-align: center; color: #888; font-size: 0.85rem; }
+
+.viagem-form-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  margin-top: 1.2rem;
+}

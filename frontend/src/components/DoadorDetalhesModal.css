@@ -1,0 +1,28 @@
+.detalhes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+.detalhes-grid > div { display: flex; flex-direction: column; gap: 0.15rem; }
+.detalhes-full { grid-column: 1 / -1; }
+.detalhes-sigilosos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.9rem;
+  background: #fafafa;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.campo-sigiloso { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.campo-sigiloso-label { font-size: 0.85rem; font-weight: 600; min-width: 90px; }
+.campo-sigiloso-valor { display: flex; align-items: center; gap: 0.6rem; font-family: monospace; }
+.campo-sigiloso-valor button {
+  background: none; border: none; color: #b91c1c;
+  font-size: 0.78rem; cursor: pointer; font-family: inherit;
+}
+.detalhes-viagens ul { margin: 0.3rem 0 0; padding-left: 1.1rem; }
+@media (max-width: 480px) {
+  .detalhes-grid { grid-template-columns: 1fr; }
+}

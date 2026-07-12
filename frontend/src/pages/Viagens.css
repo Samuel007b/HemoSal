@@ -1,0 +1,28 @@
+/* Viagens.css */
+.viagens-page { min-height: 100vh; background: #fafafa; }
+.viagens-header {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 2rem; background: #fff; border-bottom: 1px solid #eee;
+}
+.viagens-header h1 { flex: 1; color: #b91c1c; font-size: 1.3rem; margin: 0; }
+.viagens-main { padding: 1.5rem 2rem; }
+.viagens-loading { display: flex; align-items: center; gap: 0.6rem; color: #666; }
+.viagens-vazio { color: #666; }
+.viagens-tabela {
+  width: 100%; border-collapse: collapse; background: #fff;
+  border-radius: 8px; overflow: hidden;
+}
+.viagens-tabela th, .viagens-tabela td {
+  text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid #eee; font-size: 0.9rem;
+}
+.viagens-tabela th {
+  background: #f5f5f5; font-size: 0.78rem; text-transform: uppercase;
+  letter-spacing: 0.03em; color: #666;
+}
+.viagens-paginacao {
+  display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.2rem;
+}
+.viagens-paginacao button {
+  padding: 0.45rem 0.9rem; border: 1px solid #ccc; border-radius: 6px; background: #fff; cursor: pointer;
+}
+.viagens-paginacao button:disabled { opacity: 0.5; cursor: not-allowed; }
