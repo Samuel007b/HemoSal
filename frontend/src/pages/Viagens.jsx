@@ -18,7 +18,7 @@ function Viagens() {
   const [pagina, setPagina] = useState(1)
 
   const [detalheId, setDetalheId] = useState(null)
-  const [formModal, setFormModal] = useState(null) // { modo: 'criar' } | { modo: 'editar', viagem }
+  const [formModal, setFormModal] = useState(null)
 
   const carregarViagens = useCallback(() => {
     setCarregando(true)
@@ -34,7 +34,6 @@ function Viagens() {
     carregarViagens()
   }, [carregarViagens])
 
-  // GET /viagens já vem ordenado por dataSaida desc no back — sem reordenar aqui
   const totalPaginas = Math.max(1, Math.ceil(viagens.length / POR_PAGINA))
   const paginaAtual = Math.min(pagina, totalPaginas)
   const viagensPagina = viagens.slice((paginaAtual - 1) * POR_PAGINA, paginaAtual * POR_PAGINA)

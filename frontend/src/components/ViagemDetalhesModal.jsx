@@ -3,6 +3,7 @@ import { viagensService } from '../services/api'
 import { formatDate, maskCpf } from '../utils/format'
 import { formatDateTime } from '../utils/viagem'
 import { ordenarPorNome } from '../utils/buscaDoadores'
+import { exportarViagemPdf } from '../utils/exportarViagemPdf'
 import Spinner from './Spinner'
 import './ViagemDetalhesModal.css'
 
@@ -82,6 +83,9 @@ function ViagemDetalhesModal({ viagemId, onClose, onEditar, onExcluido }) {
 
             {!confirmandoExclusao ? (
               <div className="detalhes-acoes">
+                <button className="btn-secundario" onClick={() => exportarViagemPdf(viagem)}>
+                  Exportar PDF
+                </button>
                 <button className="btn-perigo" onClick={() => setConfirmandoExclusao(true)}>
                   Excluir
                 </button>

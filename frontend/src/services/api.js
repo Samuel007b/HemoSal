@@ -5,7 +5,6 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
-// Injeta o token em toda requisição, se existir
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) {
@@ -14,7 +13,6 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-// Se o token expirar/for inválido, limpa e manda pro login
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -27,7 +25,6 @@ api.interceptors.response.use(
   }
 )
 
-// ----- Autenticação / UserAdmin -----
 export const authService = {
   login: (login, senha) =>
     api.post('/user/login', { login, senha }).then((res) => res.data),
@@ -41,7 +38,6 @@ export const userAdminService = {
   deletar: (id) => api.delete(`/user/${id}`),
 }
 
-// ----- Doadores -----
 export const doadoresService = {
   listar: () => api.get('/doadores').then((res) => res.data),
   buscarPorId: (id) => api.get(`/doadores/${id}`).then((res) => res.data),
@@ -60,7 +56,6 @@ export const doadoresService = {
   deletar: (id) => api.delete(`/doadores/${id}`),
 }
 
-// ----- Viagens -----
 export const viagensService = {
   listar: () => api.get('/viagens').then((res) => res.data),
   buscarPorId: (id) => api.get(`/viagens/${id}`).then((res) => res.data),

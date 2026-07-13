@@ -22,7 +22,7 @@ function Doadores() {
   const [termoBusca, setTermoBusca] = useState('')
 
   const [detalheId, setDetalheId] = useState(null)
-  const [formModal, setFormModal] = useState(null) // { modo: 'criar' } | { modo: 'editar', doador }
+  const [formModal, setFormModal] = useState(null)
 
   const carregarDoadores = useCallback(() => {
     setCarregando(true)
@@ -38,7 +38,6 @@ function Doadores() {
     carregarDoadores()
   }, [carregarDoadores])
 
-  // volta pra primeira página sempre que o tipo ou o termo de busca mudam
   useEffect(() => {
     setPagina(1)
   }, [tipoBusca, termoBusca])

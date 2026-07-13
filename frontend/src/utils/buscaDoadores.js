@@ -22,8 +22,6 @@ export function filtrarDoadores(doadores, tipoBusca, termo) {
     return doadores.filter((d) => normalizarTexto(d.nome).includes(alvo))
   }
 
-  // cpf, rg e cartaoSus: compara só os dígitos, então tanto faz
-  // o usuário digitar "123.456" ou "123456"
   const alvoDigitos = normalizarDigitos(termoLimpo)
   return doadores.filter((d) => normalizarDigitos(d[tipoBusca]).includes(alvoDigitos))
 }

@@ -4,12 +4,11 @@ import { logout } from '../utils/auth'
 import CampoSenha from './CampoSenha'
 import './AdminMenu.css'
 
-function AdminMenu({ admin }) {
+function AdminMenu({ admin, onAtualizado }) {
   const [menuAberto, setMenuAberto] = useState(false)
   const [modalAberto, setModalAberto] = useState(false)
   const menuRef = useRef(null)
 
-  // Fecha o menu ao clicar fora
   useEffect(() => {
     function handleClickFora(e) {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -46,14 +45,15 @@ function AdminMenu({ admin }) {
         <EditarAdminModal
           admin={admin}
           onClose={() => setModalAberto(false)}
+          onAtualizado={onAtualizado}
         />
       )}
     </div>
   )
 }
 
-function EditarAdminModal({ admin, onClose }) {
-  const [etapa, setEtapa] = useState('confirmar') // 'confirmar' | 'editar'
+function EditarAdminModal({ admin, onClose, onAtualizado }) {
+  const [etapa, setEtapa] = useState('confirmar')
   const [senhaAtual, setSenhaAtual] = useState('')
   const [novoLogin, setNovoLogin] = useState(admin?.login ?? '')
   const [novaSenha, setNovaSenha] = useState('')
@@ -71,7 +71,6 @@ function EditarAdminModal({ admin, onClose }) {
     }
     setCarregando(true)
     try {
-      // Reautentica: se a senha estiver certa, o login funciona
       await authService.login(admin.login, senhaAtual)
       setEtapa('editar')
     } catch {
@@ -101,6 +100,7 @@ function EditarAdminModal({ admin, onClose }) {
         senha: novaSenha,
       })
       setSucesso(true)
+      onAtualizado()
       setTimeout(onClose, 1200)
     } catch (err) {
       if (err.response?.status === 409) {

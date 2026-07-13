@@ -1,5 +1,4 @@
-// src/pages/Home.jsx
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { userAdminService } from '../services/api'
 import { getAdminId } from '../utils/auth'
@@ -10,17 +9,21 @@ function Home() {
   const [admin, setAdmin] = useState(null)
   const navigate = useNavigate()
 
-  useEffect(() => {
+  const carregarAdmin = useCallback(() => {
     const id = getAdminId()
     if (!id) return
     userAdminService.buscarPorId(id).then(setAdmin).catch(() => {})
   }, [])
 
+  useEffect(() => {
+    carregarAdmin()
+  }, [carregarAdmin])
+
   return (
     <div className="home-page">
       <header className="home-header">
         <h1>HemoSal</h1>
-        <AdminMenu admin={admin} />
+        <AdminMenu admin={admin} onAtualizado={carregarAdmin} />
       </header>
 
       <main className="home-main">
