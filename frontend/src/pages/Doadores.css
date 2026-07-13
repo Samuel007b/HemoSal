@@ -1,48 +1,112 @@
-.doadores-page { min-height: 100vh; background: #fafafa; }
-.doadores-header {
-  display: flex; align-items: center; gap: 1rem;
-  padding: 1rem 2rem; background: #fff; border-bottom: 1px solid #eee;
-}
-.doadores-header h1 { flex: 1; color: #b91c1c; font-size: 1.3rem; margin: 0; }
-.doadores-main { padding: 1.5rem 2rem; }
-.doadores-loading { display: flex; align-items: center; gap: 0.6rem; color: #666; }
-.doadores-vazio { color: #666; }
-.doadores-tabela {
-  width: 100%; border-collapse: collapse; background: #fff;
-  border-radius: 8px; overflow: hidden;
-}
-.doadores-tabela th, .doadores-tabela td {
-  text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid #eee; font-size: 0.9rem;
-}
-.doadores-tabela th {
-  background: #f5f5f5; font-size: 0.78rem; text-transform: uppercase;
-  letter-spacing: 0.03em; color: #666;
-}
-.doadores-paginacao {
-  display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.2rem;
-}
-.doadores-paginacao button {
-  padding: 0.45rem 0.9rem; border: 1px solid #ccc; border-radius: 6px; background: #fff; cursor: pointer;
-}
-.doadores-paginacao button:disabled { opacity: 0.5; cursor: not-allowed; }
-.doadores-busca {
-  display: flex;
-  gap: 0.6rem;
-  margin-bottom: 1rem;
-}
-.doadores-busca select {
-  padding: 0.55rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+.doadores-conteudo { display: flex; flex-direction: column; gap: 1rem; }
+
+.doadores-filtros { display: flex; flex-direction: column; gap: 0.8rem; }
+
+.doadores-busca-linha { display: flex; gap: 0.6rem; }
+.doadores-busca-linha select {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   background: #fff;
 }
-.doadores-busca input {
+
+.doadores-busca-input {
   flex: 1;
-  padding: 0.55rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.9rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #999;
 }
-@media (max-width: 480px) {
-  .doadores-busca { flex-wrap: wrap; }
+.doadores-busca-input input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0.6rem 0;
+  font-size: 0.95rem;
+  color: #222;
 }
+
+.doadores-filtro-tipo {
+  width: 100%;
+  max-width: 260px;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.doadores-linha-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.doadores-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.doadores-loading { display: flex; align-items: center; gap: 0.6rem; color: #666; }
+.doadores-vazio { color: #666; }
+
+.doadores-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+.doadores-tabela th, .doadores-tabela td {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.88rem;
+}
+.doadores-tabela th {
+  background: #fafafa;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #888;
+}
+.doadores-tabela tr:last-child td { border-bottom: none; }
+
+.badge-tipo {
+  display: inline-flex;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: #fdecea;
+  color: #b91c1c;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.badge-aptidao {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.badge-aptidao.apto { background: #e6f4ea; color: #1e7e34; }
+.badge-aptidao.indisponivel { background: #f1f1f1; color: #777; }
+
+.doadores-paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+.doadores-paginacao button { padding: 0.45rem 0.9rem; border: 1px solid #ccc; border-radius: 8px; background: #fff; cursor: pointer; }
+.doadores-paginacao button:disabled { opacity: 0.5; cursor: not-allowed; }

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { authService } from '../services/api'
 import CampoSenha from '../components/CampoSenha'
+import IconGota from '../components/IconGota'
 import './Login.css'
 
 function Login() {
@@ -14,12 +15,10 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault()
     setErro('')
-
     if (!login || !senha) {
       setErro('Preencha login e senha.')
       return
     }
-
     setCarregando(true)
     try {
       const { token } = await authService.login(login, senha)
@@ -39,26 +38,15 @@ function Login() {
   return (
     <div className="login-page">
       <form className="login-card" onSubmit={handleSubmit}>
+        <span className="login-icone"><IconGota size={22} /></span>
         <h1>HemoSal</h1>
         <p className="login-subtitle">Controle de doadores de sangue</p>
 
         <label htmlFor="login">Login</label>
-        <input
-          id="login"
-          type="text"
-          value={login}
-          onChange={(e) => setLogin(e.target.value)}
-          autoComplete="username"
-          autoFocus
-        />
+        <input id="login" type="text" value={login} onChange={(e) => setLogin(e.target.value)} autoComplete="username" autoFocus />
 
         <label htmlFor="senha">Senha</label>
-        <CampoSenha
-          id="senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-          autoComplete="current-password"
-        />
+        <CampoSenha id="senha" value={senha} onChange={(e) => setSenha(e.target.value)} autoComplete="current-password" />
 
         {erro && <p className="login-erro">{erro}</p>}
 

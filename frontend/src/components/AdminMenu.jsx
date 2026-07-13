@@ -1,45 +1,20 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import { authService, userAdminService } from '../services/api'
 import { logout } from '../utils/auth'
 import CampoSenha from './CampoSenha'
 import './AdminMenu.css'
 
 function AdminMenu({ admin, onAtualizado }) {
-  const [menuAberto, setMenuAberto] = useState(false)
   const [modalAberto, setModalAberto] = useState(false)
-  const menuRef = useRef(null)
-
-  useEffect(() => {
-    function handleClickFora(e) {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenuAberto(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickFora)
-    return () => document.removeEventListener('mousedown', handleClickFora)
-  }, [])
 
   return (
-    <div className="admin-menu" ref={menuRef}>
-      <button className="admin-menu-trigger" onClick={() => setMenuAberto((v) => !v)}>
-        {admin?.login ?? 'Admin'} ▾
+    <div className="admin-menu">
+      <button className="btn-secundario" onClick={() => setModalAberto(true)} disabled={!admin}>
+        Alterar senha
       </button>
-
-      {menuAberto && (
-        <div className="admin-menu-dropdown">
-          <button
-            onClick={() => {
-              setMenuAberto(false)
-              setModalAberto(true)
-            }}
-          >
-            Editar meus dados
-          </button>
-          <button className="admin-menu-sair" onClick={logout}>
-            Sair
-          </button>
-        </div>
-      )}
+      <button className="admin-menu-sair" onClick={logout}>
+        Sair
+      </button>
 
       {modalAberto && (
         <EditarAdminModal
@@ -83,7 +58,6 @@ function EditarAdminModal({ admin, onClose, onAtualizado }) {
   async function handleSalvar(e) {
     e.preventDefault()
     setErro('')
-
     if (!novoLogin || !novaSenha) {
       setErro('Preencha login e nova senha.')
       return
@@ -92,13 +66,9 @@ function EditarAdminModal({ admin, onClose, onAtualizado }) {
       setErro('As senhas não coincidem.')
       return
     }
-
     setCarregando(true)
     try {
-      await userAdminService.atualizar(admin.id, {
-        login: novoLogin,
-        senha: novaSenha,
-      })
+      await userAdminService.atualizar(admin.id, { login: novoLogin, senha: novaSenha })
       setSucesso(true)
       onAtualizado()
       setTimeout(onClose, 1200)
@@ -121,16 +91,9 @@ function EditarAdminModal({ admin, onClose, onAtualizado }) {
         {etapa === 'confirmar' && (
           <form onSubmit={handleConfirmarSenha} className="admin-menu-form">
             <h2>Confirme sua senha</h2>
-            <p className="modal-subtitulo">
-              Por segurança, digite sua senha atual para continuar.
-            </p>
+            <p className="modal-subtitulo">Por segurança, digite sua senha atual para continuar.</p>
             <label htmlFor="senhaAtual">Senha atual</label>
-            <CampoSenha
-              id="senhaAtual"
-              value={senhaAtual}
-              onChange={(e) => setSenhaAtual(e.target.value)}
-              autoFocus
-            />
+            <CampoSenha id="senhaAtual" value={senhaAtual} onChange={(e) => setSenhaAtual(e.target.value)} autoFocus />
             {erro && <p className="modal-erro">{erro}</p>}
             <button type="submit" className="btn-primario" disabled={carregando}>
               {carregando ? 'Verificando...' : 'Continuar'}
@@ -142,24 +105,11 @@ function EditarAdminModal({ admin, onClose, onAtualizado }) {
           <form onSubmit={handleSalvar} className="admin-menu-form">
             <h2>Editar meus dados</h2>
             <label htmlFor="novoLogin">Login</label>
-            <input
-              id="novoLogin"
-              type="text"
-              value={novoLogin}
-              onChange={(e) => setNovoLogin(e.target.value)}
-            />
+            <input id="novoLogin" type="text" value={novoLogin} onChange={(e) => setNovoLogin(e.target.value)} />
             <label htmlFor="novaSenha">Nova senha</label>
-            <CampoSenha
-              id="novaSenha"
-              value={novaSenha}
-              onChange={(e) => setNovaSenha(e.target.value)}
-            />
+            <CampoSenha id="novaSenha" value={novaSenha} onChange={(e) => setNovaSenha(e.target.value)} />
             <label htmlFor="confirmaSenha">Confirmar nova senha</label>
-            <CampoSenha
-              id="confirmaSenha"
-              value={confirmaSenha}
-              onChange={(e) => setConfirmaSenha(e.target.value)}
-            />
+            <CampoSenha id="confirmaSenha" value={confirmaSenha} onChange={(e) => setConfirmaSenha(e.target.value)} />
             {erro && <p className="modal-erro">{erro}</p>}
             <button type="submit" className="btn-primario" disabled={carregando}>
               {carregando ? 'Salvando...' : 'Salvar alterações'}

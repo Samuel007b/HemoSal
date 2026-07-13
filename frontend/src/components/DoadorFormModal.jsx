@@ -12,8 +12,8 @@ function valoresIniciais(doador) {
     cartaoSus: doador?.cartaoSus ?? '',
     nome: doador?.nome ?? '',
     dataNasc: dateToInputValue(doador?.dataNasc),
-    sexo: doador?.sexo ?? 'M',
-    tipoSang: doador?.tipoSang ?? 'O+',
+    sexo: doador?.sexo ?? '',
+    tipoSang: doador?.tipoSang ?? '',
     endereco: doador?.endereco ?? '',
   }
 }
@@ -72,7 +72,7 @@ function DoadorFormModal({ modo, doador, onClose, onSuccess }) {
         <form onSubmit={handleSubmit} className="doador-form">
           <div className="doador-form-grid">
             <div>
-              <label>Nome</label>
+              <label>Nome completo</label>
               <input value={form.nome} onChange={(e) => handleChange('nome', e.target.value)} />
             </div>
             <div>
@@ -85,15 +85,16 @@ function DoadorFormModal({ modo, doador, onClose, onSuccess }) {
             </div>
             <div>
               <label>RG</label>
-              <input value={form.rg} onChange={(e) => handleChange('rg', e.target.value)} />
+              <input value={form.rg} onChange={(e) => handleChange('rg', e.target.value)} placeholder="00.000.000-0" />
             </div>
             <div>
               <label>Cartão SUS</label>
-              <input value={form.cartaoSus} onChange={(e) => handleChange('cartaoSus', e.target.value)} />
+              <input value={form.cartaoSus} onChange={(e) => handleChange('cartaoSus', e.target.value)} placeholder="000 0000 0000 0000" />
             </div>
             <div>
               <label>Sexo</label>
               <select value={form.sexo} onChange={(e) => handleChange('sexo', e.target.value)}>
+                <option value="" disabled>Selecione</option>
                 {SEXO_OPCOES.map((op) => (
                   <option key={op.value} value={op.value}>{op.label}</option>
                 ))}
@@ -102,6 +103,7 @@ function DoadorFormModal({ modo, doador, onClose, onSuccess }) {
             <div>
               <label>Tipo sanguíneo</label>
               <select value={form.tipoSang} onChange={(e) => handleChange('tipoSang', e.target.value)}>
+                <option value="" disabled>Selecione</option>
                 {TIPO_SANG_OPCOES.map((tipo) => (
                   <option key={tipo} value={tipo}>{tipo}</option>
                 ))}
@@ -109,7 +111,7 @@ function DoadorFormModal({ modo, doador, onClose, onSuccess }) {
             </div>
             <div className="doador-form-full">
               <label>Endereço</label>
-              <input value={form.endereco} onChange={(e) => handleChange('endereco', e.target.value)} />
+              <input value={form.endereco} onChange={(e) => handleChange('endereco', e.target.value)} placeholder="Rua, número, bairro, cidade" />
             </div>
           </div>
 

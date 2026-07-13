@@ -11,7 +11,7 @@
 
 .modal-card {
   background: #fff;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 1.8rem;
   width: 100%;
   max-width: 360px;
@@ -50,7 +50,7 @@
 .btn-primario {
   padding: 0.6rem 1.1rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #b91c1c;
   color: #fff;
   font-weight: 600;
@@ -64,7 +64,7 @@
 .btn-secundario {
   padding: 0.6rem 1.1rem;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #fff;
   cursor: pointer;
 }
@@ -72,7 +72,7 @@
 .btn-perigo {
   padding: 0.6rem 1.1rem;
   border: 1px solid #b91c1c;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #fff;
   color: #b91c1c;
   font-weight: 600;
@@ -128,3 +128,14 @@
   border-radius: 6px;
 }
 .btn-icone:hover { background: #fdecea; }
+
+.btn-link-neutro {
+  background: none;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0;
+  font-size: inherit;
+}
+.btn-link-neutro:hover { color: #b91c1c; }

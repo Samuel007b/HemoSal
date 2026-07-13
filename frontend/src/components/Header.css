@@ -1,0 +1,39 @@
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.app-header-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.app-header-icone {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: #b91c1c;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.app-header-titulo h1 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #1a1a1a;
+}
+
+.app-header-titulo p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #888;
+  min-height: 1em;
+}
