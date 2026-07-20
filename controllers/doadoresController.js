@@ -1,4 +1,5 @@
 import prisma from '../prisma/client.js';
+import { validarCpf } from '../utils/cpfValidator.js';
 import { encrypt, decrypt, hash } from "../utils/crypto.js";
 import { calculaDisponibilidade } from '../utils/disponibilidade.js';
 import { formataTipo, transformaTipo } from '../utils/tipoSang.js';
@@ -180,6 +181,9 @@ export async function criarDoador(req, res, next){
         if (!cpf || !rg || !cartaoSus || !nome || !dataNasc || !sexo || !tipoSang || !endereco) {
             return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
         }
+        if (!validarCpf(cpf)) {
+            return res.status(400).json({ erro: 'Número de CPF inválido.' });
+        }
         const dataNascimento = new Date(dataNasc);
         if (isNaN(dataNascimento.getTime())) {
             return res.status(400).json({ erro: 'Data de nascimento inválida' });
@@ -228,6 +232,9 @@ export async function atualizarDoador(req, res, next){
         }
         if (isNaN(Number(id)) || !Number.isInteger(Number(id))) {
             return res.status(400).json({ erro: 'ID inválido' });
+        }
+        if (!validarCpf(cpf)) {
+            return res.status(400).json({ erro: 'Número de CPF inválido.' });
         }
         const dataNascimento = new Date(dataNasc);
         if (isNaN(dataNascimento.getTime())) {
